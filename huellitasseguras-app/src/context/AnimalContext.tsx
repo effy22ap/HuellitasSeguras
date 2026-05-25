@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect } from 'react';
+import { apiClient } from '../api/client';
 
 export interface Animal {
   id: number;
@@ -22,11 +23,11 @@ export const AnimalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [animales, setAnimales] = useState<Animal[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    const obtenerMascotas = async () => {
+    const cargarMascotas = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/v1/animales');
-        const datos = await res.json();
+        const datos = await apiClient.obtenerTodos();
         setAnimales(datos);
       } catch (error) {
         console.error("Error cargando animales:", error);
@@ -34,33 +35,24 @@ export const AnimalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setLoading(false);
       }
     };
-    obtenerMascotas();
+    cargarMascotas();
   }, []);
+
 
   const agregarAnimal = async (nuevoAnimal: Omit<Animal, 'id'>) => {
     try {
-      const res = await fetch('http://localhost:5000/api/v1/animales', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nuevoAnimal),
-      });
-      if (res.ok) {
-        const animalCreado = await res.json();
-        setAnimales((prev) => [...prev, animalCreado]);
-      }
+      const animalCreado = await apiClient.crear(nuevoAnimal);
+      setAnimales((prev) => [...prev, animalCreado]);
     } catch (error) {
       console.error("Error al ejecutar POST:", error);
     }
   };
 
+
   const eliminarAnimal = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/animales/${id}`, {
-        method: 'DELETE',
-      });
-      if (res.ok) {
-        setAnimales((prev) => prev.filter((animal) => animal.id !== id));
-      }
+      await apiClient.eliminar(id);
+      setAnimales((prev) => prev.filter((animal) => animal.id !== id));
     } catch (error) {
       console.error("Error al ejecutar DELETE:", error);
     }

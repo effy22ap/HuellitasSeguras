@@ -71,3 +71,7 @@ export default defineConfig([
   },
 ])
 ```
+##Enlaces del Proyecto Desplegado
+
+* **Frontend de la Aplicación (Vercel):** [https://huellitasseguras-app.vercel.app](https://huellitasseguras-app.vercel.app)
+* **API REST Backend (Vercel):** [https://huellitasseguras-api.vercel.app/api/v1/animales](https://huellitasseguras-api.vercel.app/api/v1/animales)
