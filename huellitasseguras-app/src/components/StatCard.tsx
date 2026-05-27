@@ -15,7 +15,6 @@ export const StatCard: React.FC<StatCardProps> = ({ title, value, color }) => {
         <p className="text-sm font-medium text-gray-500 uppercase tracking-wider">{title}</p>
         <p className="text-3xl font-bold text-gray-800 mt-1">{value}</p>
       </div>
-      {/* El círculo de color de la derecha */}
       <div className={`w-12 h-12 rounded-full ${color} opacity-20 flex items-center justify-center`} />
     </div>
   );
